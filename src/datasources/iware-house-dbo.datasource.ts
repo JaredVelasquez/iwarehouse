@@ -4,11 +4,11 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'IwareHouseDBO',
   connector: 'mssql',
-  url: 'mssql://jared:1234@DESKTOP-914IUVT/iwarehousedb',
-  host: 'DESKTOP-914IUVT',
+  url: 'mssql://iWareHouse_SQLLogin_1:ezawvf78sc@iwarehousedb.mssql.somee.com/iwarehousedb',
+  host: 'iwarehousedb.mssql.somee.com',
   port: 1433,
-  user: 'jared',
-  password: '1234',
+  user: 'iWareHouse_SQLLogin_1',
+  password: 'ezawvf78sc',
   database: 'iwarehousedb'
 };
 
