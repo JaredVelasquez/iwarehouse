@@ -80,6 +80,7 @@ export class GaUsersController {
     return this.gaUsersRepository.create(gaUsers);
   }
 
+  @authenticate.skip()
   @post('/login', {
     responses: {
       '200': {

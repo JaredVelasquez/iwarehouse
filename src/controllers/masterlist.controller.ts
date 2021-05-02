@@ -36,6 +36,8 @@ export class MasterlistController {
     public gaUsersRepository: GaUsersRepository,
   ) { }
 
+
+  @authenticate.skip()
   @post('/masterlists')
   @response(200, {
     description: 'Masterlists model instance',
@@ -56,6 +58,10 @@ export class MasterlistController {
   ): Promise<Masterlists> {
     let auxdocpas = masterlists.pasdoc;
     masterlists.pasdoc = null;
+    masterlists.status = 'Active';
+
+
+
     let m = await this.masterlistsRepository.create(masterlists);
 
     let password1 = new EncryptDecrypt(keys.MD5).Encrypt(auxdocpas);
