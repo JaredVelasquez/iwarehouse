@@ -58,10 +58,7 @@ export class PhJobMovements extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<PhJobMovements>) {
@@ -70,7 +67,7 @@ export class PhJobMovements extends Entity {
 }
 
 export interface PhJobMovementsRelations {
-  // describe navigational properties here
+
 }
 
 export type PhJobMovementsWithRelations = PhJobMovements & PhJobMovementsRelations;

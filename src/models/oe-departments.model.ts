@@ -44,10 +44,7 @@ export class OeDepartments extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<OeDepartments>) {
@@ -56,7 +53,7 @@ export class OeDepartments extends Entity {
 }
 
 export interface OeDepartmentsRelations {
-  // describe navigational properties here
+
 }
 
 export type OeDepartmentsWithRelations = OeDepartments & OeDepartmentsRelations;

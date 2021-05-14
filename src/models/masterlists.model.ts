@@ -121,10 +121,7 @@ export class Masterlists extends Entity {
   })
   pasdoc?: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<Masterlists>) {
@@ -133,7 +130,7 @@ export class Masterlists extends Entity {
 }
 
 export interface MasterlistsRelations {
-  // describe navigational properties here
+
 }
 
 export type MasterlistsWithRelations = Masterlists & MasterlistsRelations;

@@ -82,10 +82,7 @@ export class OeOfficeUsers extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<OeOfficeUsers>) {
@@ -94,7 +91,7 @@ export class OeOfficeUsers extends Entity {
 }
 
 export interface OeOfficeUsersRelations {
-  // describe navigational properties here
+
 }
 
 export type OeOfficeUsersWithRelations = OeOfficeUsers & OeOfficeUsersRelations;

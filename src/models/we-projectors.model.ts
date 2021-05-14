@@ -78,10 +78,7 @@ export class WeProjectors extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<WeProjectors>) {
@@ -90,7 +87,7 @@ export class WeProjectors extends Entity {
 }
 
 export interface WeProjectorsRelations {
-  // describe navigational properties here
+
 }
 
 export type WeProjectorsWithRelations = WeProjectors & WeProjectorsRelations;

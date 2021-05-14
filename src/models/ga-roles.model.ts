@@ -34,10 +34,7 @@ export class GaRoles extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<GaRoles>) {
@@ -46,7 +43,7 @@ export class GaRoles extends Entity {
 }
 
 export interface GaRolesRelations {
-  // describe navigational properties here
+
 }
 
 export type GaRolesWithRelations = GaRoles & GaRolesRelations;

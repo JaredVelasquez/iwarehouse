@@ -4,6 +4,7 @@ import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
 import {JwtService} from '../services/jwt.service';
+import {autheticate} from './Atenticate';
 /**
  * Packages:
  * npm i @loopback/authentication
@@ -25,19 +26,8 @@ export class AdministradorStrategy implements AuthenticationStrategy {
       throw new HttpErrors[401]("No existe un token en la solicitud.")
     }
     let info = this.authService.VerificarTokenJWT(token);
-    if (info) {
-      if (info.data.Role == '2') {
-        let perfil: UserProfile = Object.assign({
-          masterlistCode: info.data.Mastercode,
-          username: info.data.Username,
-          role: info.data.Role
-        });
-        return perfil;
-      } else {
-        throw new HttpErrors[401]("El token es válido, pero no tiene los permisos suficientes para ejecutar esta acción.")
-      }
-    } else {
-      throw new HttpErrors[401]("El token enviado no es válido.")
-    }
+    const profileData = autheticate(info, '2');
+
+    return profileData;
   }
 }

@@ -22,7 +22,6 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
-import {ServiceKeys as keys} from '../keys/service_keys';
 import {Masterlists} from '../models';
 import {GaUsersRepository, MasterlistsRepository} from '../repositories';
 import {EncryptDecrypt} from '../services/encrypt_decrypt_service';
@@ -64,13 +63,12 @@ export class MasterlistController {
 
     let m = await this.masterlistsRepository.create(masterlists);
 
-    let password1 = new EncryptDecrypt(keys.MD5).Encrypt(auxdocpas);
-    let password2 = new EncryptDecrypt(keys.MD5).Encrypt(password1);
+    let passwordEncrypted = new EncryptDecrypt().Encrypt(auxdocpas);
     let newUser = {
       roleId: 2,
       masterlistCode: m.masterlistCode,
       username: m.email,
-      password: password2,
+      password: passwordEncrypted,
       status: m.status,
       createdBy: m.createdBy,
       createdAt: m.createdAt,
