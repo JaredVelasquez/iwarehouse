@@ -80,10 +80,7 @@ export class OeLabs extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<OeLabs>) {
@@ -92,7 +89,7 @@ export class OeLabs extends Entity {
 }
 
 export interface OeLabsRelations {
-  // describe navigational properties here
+
 }
 
 export type OeLabsWithRelations = OeLabs & OeLabsRelations;

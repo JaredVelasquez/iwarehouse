@@ -72,10 +72,7 @@ export class WeMonitors extends Entity {
   })
   updatedAt: string;
 
-  // Define well-known properties here
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<WeMonitors>) {
@@ -84,7 +81,7 @@ export class WeMonitors extends Entity {
 }
 
 export interface WeMonitorsRelations {
-  // describe navigational properties here
+
 }
 
 export type WeMonitorsWithRelations = WeMonitors & WeMonitorsRelations;

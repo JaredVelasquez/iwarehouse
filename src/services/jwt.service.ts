@@ -1,61 +1,62 @@
-import { /* inject, */ BindingScope, injectable} from '@loopback/core';
+import {BindingScope, injectable} from '@loopback/core';
 import {
   repository
 } from '@loopback/repository';
 import {ServiceKeys as keys} from '../keys/service_keys';
-import {GaUsers} from '../models';
-import {GaUsersRepository} from '../repositories';
+import {Masterlists} from '../models';
+import {MasterlistsRepository} from '../repositories';
 import {EncryptDecrypt} from './encrypt_decrypt_service';
-const jwt = require('jsonwebtoken');
+const jsonwebtoken = require('jsonwebtoken');
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class JwtService {
   constructor(
-    @repository(GaUsersRepository)
-    public gaUsersRepository: GaUsersRepository,
+    @repository(MasterlistsRepository)
+    public masterlistsRepository: MasterlistsRepository,
   ) { }
 
-  /**
-   * Creación de un token JWT
-   */
-  CrearTokenJWT(user: GaUsers) {
-    let claveSecreta = keys.JWT_SECRET_KEY;
-    let tk = jwt.sign({
+  createToken(user: Masterlists) {
+    let token = jsonwebtoken.sign({
       exp: keys.TOKEN_EXPIRATION_TIME,
       data: {
-        Mastercode: user.masterlistCode,
-        Username: user.username,
+        UserID: user.masterlistCode,
+        UserNAME: user.username,
         Role: user.roleId
       }
-    }, claveSecreta);
-    return tk;
+    }, keys.JWT_SECRET_KEY);
+    return token;
   }
 
-  /**
-   * Verificar un token
-   */
-  VerificarTokenJWT(token: string) {
+  VerifyToken(token: string) {
     try {
-      let decoded = jwt.verify(token, keys.JWT_SECRET_KEY);
+      let decoded = jsonwebtoken.verify(token, keys.JWT_SECRET_KEY);
       return decoded;
     } catch {
       return null;
     }
   }
 
-  async Identify(username: string, password: string): Promise<GaUsers | false> {
-    let user = await this.gaUsersRepository.findOne({where: {username: username}});
-
-    console.log(`Username: ${user?.username} - Password: ${user?.password}`);
+  async IdentifyToken(username: string, password: string): Promise<Masterlists | false> {
+    let user = await this.masterlistsRepository.findOne({where: {username: username}});
+    if (!user) {
+      user = await this.masterlistsRepository.findOne({where: {email: username}});
+    }
     if (user) {
-      let cryptPass = new EncryptDecrypt(keys.LOGIN_CRYPT_METHOD).Encrypt(password);
-      let cryptPass2 = new EncryptDecrypt(keys.LOGIN_CRYPT_METHOD).Encrypt(cryptPass);
-
-      console.log(`cryptPass: ${cryptPass}`);
-      console.log(`cryptPass2: ${cryptPass2}`);
-      if (user.password == cryptPass2) {
+      let cryptPass = new EncryptDecrypt().Encrypt(password);
+      if (user.passwordHash == cryptPass) {
         return user;
       }
+    }
+    return false;
+  }
+
+  async ResetPassword(email: string, newpassword: string): Promise<string | false> {
+    let user = await this.masterlistsRepository.findOne({where: {email: email}});
+    if (user) {
+      newpassword = new EncryptDecrypt().Encrypt(newpassword);
+      user.passwordHash = newpassword;
+      this.masterlistsRepository.replaceById(user.masterlistCode, user);
+      return newpassword;
     }
     return false;
   }
