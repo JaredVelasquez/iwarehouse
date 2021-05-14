@@ -25,7 +25,7 @@ export class AdministradorStrategy implements AuthenticationStrategy {
     if (!token) {
       throw new HttpErrors[401]("No existe un token en la solicitud.")
     }
-    let info = this.authService.VerificarTokenJWT(token);
+    let info = this.authService.VerifyToken(token);
     const profileData = autheticate(info, '2');
 
     return profileData;

@@ -1,5 +1,4 @@
 export * from './ga-roles.repository';
-export * from './ga-users.repository';
 export * from './masterlists.repository';
 export * from './oe-class-rooms.repository';
 export * from './oe-departments.repository';
@@ -11,3 +10,4 @@ export * from './ph-jobs.repository';
 export * from './we-cases.repository';
 export * from './we-monitors.repository';
 export * from './we-projectors.repository';
+

@@ -9,7 +9,7 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param,
+  getModelSchemaRef, HttpErrors, param,
 
 
   patch, post,
@@ -23,18 +23,80 @@ import {
   response
 } from '@loopback/rest';
 import {Masterlists} from '../models';
-import {GaUsersRepository, MasterlistsRepository} from '../repositories';
+import {MasterlistsRepository} from '../repositories';
 import {EncryptDecrypt} from '../services/encrypt_decrypt_service';
+import {JwtService} from '../services/jwt.service';
+const shortid = require('shortid');
+class Credentials {
+  username: string;
+  password: string;
+}
+
+class PasswordResetData {
+  username: string;
+  phonenumber: string;
+  newpassword: string;
+}
+
+class ChangePasswordData {
+  id: string;
+  currentPassword: string;
+  newPassword: string;
+}
 
 @authenticate('admin')
 export class MasterlistController {
+  jwtService: JwtService;
   constructor(
     @repository(MasterlistsRepository)
     public masterlistsRepository: MasterlistsRepository,
-    @repository(GaUsersRepository)
-    public gaUsersRepository: GaUsersRepository,
-  ) { }
+  ) {
 
+    this.jwtService = new JwtService(this.masterlistsRepository);
+  }
+
+
+  @authenticate.skip()
+  @post('/login', {
+    responses: {
+      '200': {
+        description: 'Login for users'
+      }
+    }
+  })
+  async login(
+    @requestBody() credentials: Credentials
+  ): Promise<object> {
+    let user = await this.jwtService.IdentifyToken(credentials.username, credentials.password);
+    if (user) {
+      let tk = await this.jwtService.createToken(user);
+      return {
+        data: user,
+        token: tk
+      }
+    } else {
+      throw new HttpErrors[401]("User or Password invalid.");
+    }
+  }
+
+
+  @authenticate.skip()
+  @post('/password-reset', {
+    responses: {
+      '200': {
+        description: 'Login for users'
+      }
+    }
+  })
+  async reset(
+    @requestBody() passwordResetData: PasswordResetData
+  ): Promise<boolean> {
+    let newpassword = await this.jwtService.ResetPassword(passwordResetData.username, passwordResetData.newpassword);
+    if (newpassword) {
+      return true;
+    }
+    throw new HttpErrors[400]("User not found");
+  }
 
   @authenticate.skip()
   @post('/masterlists')
@@ -55,27 +117,16 @@ export class MasterlistController {
     })
     masterlists: Omit<Masterlists, 'id'>,
   ): Promise<Masterlists> {
-    let auxdocpas = masterlists.pasdoc;
-    masterlists.pasdoc = null;
-    masterlists.status = 'Active';
+    let auxdocpas = masterlists.passwordHash;
+    masterlists.passwordHash = null;
+    masterlists.status = "Active";
+    masterlists.roleId = 2;
+    masterlists.masterlistCode = shortid.generate();
 
-
+    let passwordEncripted = new EncryptDecrypt().Encrypt(auxdocpas);
+    masterlists.passwordHash = passwordEncripted;
 
     let m = await this.masterlistsRepository.create(masterlists);
-
-    let passwordEncrypted = new EncryptDecrypt().Encrypt(auxdocpas);
-    let newUser = {
-      roleId: 2,
-      masterlistCode: m.masterlistCode,
-      username: m.email,
-      password: passwordEncrypted,
-      status: m.status,
-      createdBy: m.createdBy,
-      createdAt: m.createdAt,
-      updatedAt: m.updatedAt
-    };
-
-    let u = await this.gaUsersRepository.create(newUser);
 
     return m;
   }

@@ -4,12 +4,29 @@ import {Entity, model, property} from '@loopback/repository';
 export class Masterlists extends Entity {
   @property({
     type: 'string',
-    required: true,
+    required: false,
     length: 50,
     id: 1,
-    mssql: {columnName: 'masterlistCode', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'NO'},
+    mssql: {columnName: 'masterlistCode', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'YES'},
   })
-  masterlistCode: string;
+  masterlistCode?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+    length: 50,
+    mssql: {columnName: 'humanCode', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'NO'},
+  })
+  humanCode: string;
+
+  @property({
+    type: 'number',
+    required: false,
+    precision: 10,
+    scale: 0,
+    mssql: {columnName: 'role_id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'YES'},
+  })
+  roleId?: number;
 
   @property({
     type: 'string',
@@ -73,10 +90,27 @@ export class Masterlists extends Entity {
 
   @property({
     type: 'string',
+    required: true,
     length: 255,
-    mssql: {columnName: 'email', dataType: 'nvarchar', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'YES'},
+    mssql: {columnName: 'email', dataType: 'nvarchar', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'NO'},
   })
-  email?: string;
+  email: string;
+
+  @property({
+    type: 'string',
+    required: true,
+    length: 50,
+    mssql: {columnName: 'passwordHash', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'NO'},
+  })
+  passwordHash: string;
+
+  @property({
+    type: 'string',
+    required: true,
+    length: 50,
+    mssql: {columnName: 'username', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'NO'},
+  })
+  username: string;
 
   @property({
     type: 'string',
@@ -87,11 +121,11 @@ export class Masterlists extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
     length: 255,
-    mssql: {columnName: 'status', dataType: 'nvarchar', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'NO'},
+    mssql: {columnName: 'status', dataType: 'nvarchar', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'YES'},
   })
-  status: string;
+  status?: string;
 
   @property({
     type: 'string',
@@ -114,14 +148,10 @@ export class Masterlists extends Entity {
   })
   updatedAt: string;
 
-  @property({
-    type: 'string',
-    length: 50,
-    mssql: {columnName: 'pasdoc', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'YES'},
-  })
-  pasdoc?: string;
+  // Define well-known properties here
 
-
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<Masterlists>) {
@@ -130,7 +160,7 @@ export class Masterlists extends Entity {
 }
 
 export interface MasterlistsRelations {
-
+  // describe navigational properties here
 }
 
 export type MasterlistsWithRelations = Masterlists & MasterlistsRelations;

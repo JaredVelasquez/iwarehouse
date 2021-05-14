@@ -4,13 +4,13 @@ import {Entity, model, property} from '@loopback/repository';
 export class PhJobs extends Entity {
   @property({
     type: 'number',
-    required: false,
+    required: true,
     precision: 10,
     scale: 0,
     id: 1,
-    mssql: {columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'YES'},
+    mssql: {columnName: 'id', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'NO'},
   })
-  id?: number;
+  id: number;
 
   @property({
     type: 'string',
@@ -23,8 +23,8 @@ export class PhJobs extends Entity {
   @property({
     type: 'string',
     required: true,
-    length: 255,
-    mssql: {columnName: 'role', dataType: 'nvarchar', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'NO'},
+    length: 50,
+    mssql: {columnName: 'role', dataType: 'nvarchar', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'NO'},
   })
   role: string;
 
@@ -57,7 +57,10 @@ export class PhJobs extends Entity {
   })
   updatedAt: string;
 
+  // Define well-known properties here
 
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
   constructor(data?: Partial<PhJobs>) {
@@ -66,7 +69,7 @@ export class PhJobs extends Entity {
 }
 
 export interface PhJobsRelations {
-
+  // describe navigational properties here
 }
 
 export type PhJobsWithRelations = PhJobs & PhJobsRelations;
