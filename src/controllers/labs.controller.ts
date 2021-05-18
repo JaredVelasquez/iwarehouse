@@ -22,6 +22,7 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
+import {viewOf} from '../keys/viewOf.keys';
 import {OeLabs} from '../models';
 import {OeLabsRepository} from '../repositories';
 
@@ -156,5 +157,35 @@ export class LabsController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.oeLabsRepository.deleteById(id);
+  }
+
+  @get('/get-cases-labs')
+  async CasesLabs(): Promise<any> {
+    let datos: any[] = await this.GetCasesLabs();
+    return datos;
+  }
+
+  async GetCasesLabs() {
+    return await this.oeLabsRepository.dataSource.execute(viewOf.GetCasesLabs,);
+  }
+
+  @get('/get-monitors-labs')
+  async MonitorsLabs(): Promise<any> {
+    let datos: any[] = await this.GetMonitorsLabs();
+    return datos;
+  }
+
+  async GetMonitorsLabs() {
+    return await this.oeLabsRepository.dataSource.execute(viewOf.GetMonitorsLabs,);
+  }
+
+  @get('/get-code-labs')
+  async LabsCode(): Promise<any> {
+    let datos: any[] = await this.GetLabsCode();
+    return datos;
+  }
+
+  async GetLabsCode() {
+    return await this.oeLabsRepository.dataSource.execute(viewOf.GetLabsCode,);
   }
 }
