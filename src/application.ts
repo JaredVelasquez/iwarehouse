@@ -10,6 +10,8 @@ import {
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {AdministradorStrategy} from './estrategies/administrator_strategy';
+import {EditorStrategy} from './estrategies/editor_strategy';
+import {ReaderStrategy} from './estrategies/reader_strategy';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -39,6 +41,8 @@ export class IwarehouseappApplication extends BootMixin(
     };
 
     registerAuthenticationStrategy(this, AdministradorStrategy);
+    registerAuthenticationStrategy(this, EditorStrategy);
+    registerAuthenticationStrategy(this, ReaderStrategy);
     this.component(AuthenticationComponent);
 
   }

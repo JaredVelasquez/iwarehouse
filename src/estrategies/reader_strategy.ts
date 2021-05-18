@@ -6,7 +6,7 @@ import parseBearerToken from 'parse-bearer-token';
 import {JwtService} from '../services/jwt.service';
 import {autheticate} from './Atenticate';
 
-export class AdministradorStrategy implements AuthenticationStrategy {
+export class ReaderStrategy implements AuthenticationStrategy {
   name: string = 'reader';
 
   constructor(
