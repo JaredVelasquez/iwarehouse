@@ -3,6 +3,7 @@ import {service} from '@loopback/core';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
+import {Roles} from '../keys/roles.keys';
 import {JwtService} from '../services/jwt.service';
 import {autheticate} from './Atenticate';
 /**
@@ -27,7 +28,7 @@ export class AdministradorStrategy implements AuthenticationStrategy {
     }
     let info = this.authService.VerifyToken(token);
 
-    const profileData = autheticate(info, '1');
+    const profileData = autheticate(info, Roles.Administrator);
 
     return profileData;
   }
