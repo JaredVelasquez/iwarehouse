@@ -22,6 +22,7 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
+import {viewOf} from '../keys/viewOf.keys';
 import {OeOffices} from '../models';
 import {OeOfficesRepository} from '../repositories';
 
@@ -156,5 +157,25 @@ export class OfficesController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.oeOfficesRepository.deleteById(id);
+  }
+
+  @get('/get-case-offices')
+  async CasesOfices(): Promise<any> {
+    let datos: any[] = await this.GetCasesOfices();
+    return datos;
+  }
+
+  async GetCasesOfices() {
+    return await this.oeOfficesRepository.dataSource.execute(viewOf.GetCasesOfices,);
+  }
+
+  @get('/get-monitors-offices')
+  async MonitorsOfices(): Promise<any> {
+    let datos: any[] = await this.GetMonitorsOfices();
+    return datos;
+  }
+
+  async GetMonitorsOfices() {
+    return await this.oeOfficesRepository.dataSource.execute(viewOf.GetMonitorsOfices,);
   }
 }

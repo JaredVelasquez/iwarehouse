@@ -1,27 +1,7 @@
 import {authenticate} from '@loopback/authentication';
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where
-} from '@loopback/repository';
-import {
-  del, get,
-  getModelSchemaRef, param,
-
-
-  patch, post,
-
-
-
-
-  put,
-
-  requestBody,
-  response
-} from '@loopback/rest';
+import {Count, CountSchema, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
+import {del, get, getModelSchemaRef, param, patch, post, put, requestBody, response} from '@loopback/rest';
+import {viewOf} from '../keys/viewOf.keys';
 import {OeClassRooms} from '../models';
 import {OeClassRoomsRepository} from '../repositories';
 
@@ -156,5 +136,45 @@ export class ClassRomsController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.oeClassRoomsRepository.deleteById(id);
+  }
+
+  @get('/get-case-rooms')
+  async CasesClassRooms(): Promise<any> {
+    let datos: any[] = await this.GetCasesClassRooms();
+    return datos;
+  }
+
+  async GetCasesClassRooms() {
+    return await this.oeClassRoomsRepository.dataSource.execute(viewOf.GetCasesClassRooms,);
+  }
+
+  @get('/get-monitors-rooms')
+  async MonitorsClassRooms(): Promise<any> {
+    let datos: any[] = await this.GetMonitorsClassRooms();
+    return datos;
+  }
+
+  async GetMonitorsClassRooms() {
+    return await this.oeClassRoomsRepository.dataSource.execute(viewOf.GetMonitorsClassRooms,);
+  }
+
+  @get('/get-projectors-rooms')
+  async ProjectorsClassRooms(): Promise<any> {
+    let datos: any[] = await this.GetProjectorsClassRooms();
+    return datos;
+  }
+
+  async GetProjectorsClassRooms() {
+    return await this.oeClassRoomsRepository.dataSource.execute(viewOf.GetProjectorsClassRooms,);
+  }
+
+  @get('/get-code-rooms')
+  async ClassRoomsCode(): Promise<any> {
+    let datos: any[] = await this.GetClassRoomsCode();
+    return datos;
+  }
+
+  async GetClassRoomsCode() {
+    return await this.oeClassRoomsRepository.dataSource.execute(viewOf.GetClassRoomsCode,);
   }
 }
