@@ -11,7 +11,7 @@ import {autheticate} from './Atenticate';
  * npm i @loopback/security
  * npm i parse-bearer-token
  */
-export class AdministradorStrategy implements AuthenticationStrategy {
+export class EditorStrategy implements AuthenticationStrategy {
   name: string = 'editor';
 
   constructor(
